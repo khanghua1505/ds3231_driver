@@ -48,12 +48,12 @@ extern "C" {
 
 typedef time_t epoch_time_t;
 
-typedef ssize_t (*ds3231_write_t)(uint16_t dev_addr, uint8_t reg_addr, 
-    const uint8_t *buffer, uint16_t len); 
+typedef int (*ds3231_write_t)(uint16_t dev_addr, uint8_t reg_addr,
+    const uint8_t *buffer, uint8_t len);
 
-typedef ssize_t (*ds3231_read_t)(uint16_t dev_addr, uint8_t reg_addr, 
-    uint8_t *buffer, uint16_t len);
-    
+typedef int (*ds3231_read_t)(uint16_t dev_addr, uint8_t reg_addr,
+    uint8_t *buffer, uint8_t len);
+
 typedef void (*ds3231_alarm_callback_t)(void *args);
 
 typedef enum {
@@ -111,21 +111,21 @@ typedef struct {
 }
 ds3231_handle_t;
 
-ds3231_status_t ds3231_init(ds3231_handle_t *handle, ds3231_write_t writefn, 
+ds3231_status_t ds3231_init(ds3231_handle_t *handle, ds3231_write_t writefn,
     ds3231_read_t readfn);
-ds3231_status_t ds3231_get_epochtime(ds3231_handle_t *handle, epoch_time_t *time);
-ds3231_status_t ds3231_set_epochtime(ds3231_handle_t *handle, epoch_time_t time);
-ds3231_status_t ds3231_set_alarm(ds3231_handle_t *handle, ds3231_alarm_type_t alarm, 
+ds3231_status_t ds3231_gettime(ds3231_handle_t *handle, epoch_time_t *time);
+ds3231_status_t ds3231_settime(ds3231_handle_t *handle, epoch_time_t time);
+ds3231_status_t ds3231_set_alarm(ds3231_handle_t *handle, ds3231_alarm_type_t alarm,
     uint8_t alarm_mask, ds3231_datetime_t time, ds3231_alarm_callback_t cb, void *args);
-ds3231_status_t ds3231_get_alarm(ds3231_handle_t *handle, ds3231_alarm_type_t alarm, 
+ds3231_status_t ds3231_get_alarm(ds3231_handle_t *handle, ds3231_alarm_type_t alarm,
     ds3231_datetime_t *time);
 ds3231_status_t ds3231_allow_alarm(ds3231_handle_t *handle, ds3231_alarm_type_t alarm,
     bool enabled);
 ds3231_status_t ds3231_alarm_callback(ds3231_handle_t *handle);
-ds3231_datetime_t ds3231_convert_epochtime(epoch_time_t time);
-epoch_time_t ds3231_convert_datetime(ds3231_datetime_t time);
+ds3231_datetime_t ds3231_time2datetime(epoch_time_t time);
+epoch_time_t ds3231_datetime2time(ds3231_datetime_t time);
 
-#ifdef __cpluscplus
+#ifdef __cplusplus
 }
 #endif  // __cplusplus
 
