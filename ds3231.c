@@ -61,8 +61,8 @@ ds3231_status_t ds3231_init(ds3231_handle_t *handle, ds3231_write_t writefn,
   handle->write = writefn;
   handle->read = readfn;
   for (index = DS3231_ALARM_1; index < DS3231_ALARM_TOTAL; index++) {
-    handle->alarms[DS3231_ALARM_1].enabled = false;
-    handle->alarms[DS3231_ALARM_2].cb = NULL;
+    handle->alarms[index].enabled = false;
+    handle->alarms[index].cb = NULL;
   }
 
   byte_transferred = handle->read(DS3231_ADDRESS, DS3231_CONTROL1_REG_ADDRESS,
